@@ -112,7 +112,7 @@ install_easytier() {
     # 检查是否已下载
     if [ ! -d "$ZT_LIST" ]; then
         print_info "从远程源下载 easytier..."
-        wget -q -O "$ZIP_NAME" "https://file.surtr.nl/soft/easytier/$ZIP_NAME"
+        wget -q -O "$ZIP_NAME" "https://soft.surtr.nl/soft/easytier/$ZIP_NAME"
         
         if [ $? -ne 0 ]; then
             print_error "下载失败，请检查网络连接。"
