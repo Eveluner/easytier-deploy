@@ -72,7 +72,7 @@ commands=(
   "rm -f $ZIP_NAME"
   "chmod -R +x $INSTALL_DIR"
   "cd $ZT_LIST"
-  "./easytier-core -i 0.0.0.0 --network-name aly-sh --network-secret ashdhaw23423 --vpn-portal wg://0.0.0.0:11013/10.6.6.0/24"
+  "./easytier-core -i 0.0.0.0 --network-name aly-sh --network-secret ashdhaw23423 --vpn-portal wg://0.0.0.0:11013/10.6.6.0/24 --relay-all-peer-rpc"
 )
 
 # 逐条发送命令到 screen
