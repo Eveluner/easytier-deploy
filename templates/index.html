@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center mt-5">
+  <h1>easytier-deploy</h1>
+  <p class="lead">管理和分发 easytier 组网配置文件的基础平台。</p>
+  {% if user %}
+  <a class="btn btn-primary" href="{{ url_for('dashboard') }}">进入控制台</a>
+  {% else %}
+  <a class="btn btn-primary" href="{{ url_for('login') }}">登录</a>
+  <a class="btn btn-secondary" href="{{ url_for('register') }}">注册</a>
+  {% endif %}
+</div>
+{% endblock %}

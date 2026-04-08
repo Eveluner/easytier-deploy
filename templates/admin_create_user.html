@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>创建新用户</h1>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">用户名</label>
+    <input class="form-control" name="username" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">邮箱</label>
+    <input type="email" class="form-control" name="email" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">密码</label>
+    <input type="password" class="form-control" name="password" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">角色</label>
+    <select class="form-select" name="role">
+      <option value="user">普通用户</option>
+      <option value="admin">管理员</option>
+    </select>
+  </div>
+  <button class="btn btn-success">创建</button>
+  <a class="btn btn-link" href="{{ url_for('admin_panel') }}">取消</a>
+</form>
+{% endblock %}

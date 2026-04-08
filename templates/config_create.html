@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>生成配置文件</h1>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">选择网段</label>
+    <select class="form-select" name="network_id" required>
+      <option value="">请选择</option>
+      {% for net in networks %}
+      <option value="{{ net.id }}">{{ net.name }} - {{ net.cidr }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">目标系统</label>
+    <select class="form-select" name="os_type" required>
+      <option value="linux">Linux</option>
+      <option value="windows">Windows</option>
+    </select>
+  </div>
+  <button class="btn btn-primary">生成配置</button>
+  <a class="btn btn-link" href="{{ url_for('dashboard') }}">返回控制台</a>
+</form>
+{% endblock %}

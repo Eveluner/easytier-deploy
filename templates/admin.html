@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>管理员面板</h1>
+<div class="mb-3">
+  <a class="btn btn-success" href="{{ url_for('admin_create_user') }}">创建用户</a>
+  <a class="btn btn-link" href="{{ url_for('dashboard') }}">返回控制台</a>
+</div>
+<h3>用户列表</h3>
+<table class="table table-bordered">
+  <thead><tr><th>用户名</th><th>邮箱</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.role }}</td>
+      <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>
+        {% if not u.is_admin() %}
+        <form class="d-inline" action="{{ url_for('admin_delete_user', user_id=u.id) }}" method="post">
+          <button class="btn btn-sm btn-danger">删除</button>
+        </form>
+        {% else %}
+        <span class="text-muted">不可删除</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h3>网段列表</h3>
+<table class="table table-bordered">
+  <thead><tr><th>名称</th><th>CIDR</th><th>所有者</th><th>创建时间</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for net in networks %}
+    <tr>
+      <td>{{ net.name }}</td>
+      <td>{{ net.cidr }}</td>
+      <td>{{ net.owner.username }}</td>
+      <td>{{ net.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>
+        <form class="d-inline" action="{{ url_for('admin_delete_network', network_id=net.id) }}" method="post">
+          <button class="btn btn-sm btn-danger">删除</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h3>IP 管理</h3>
+<table class="table table-bordered">
+  <thead><tr><th>网段</th><th>IP</th><th>状态</th><th>分配到</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for ip in ips %}
+    <tr>
+      <td>{{ ip.network.name }}</td>
+      <td>{{ ip.ip }}</td>
+      <td>{{ '已分配' if ip.assigned else '可用' }}</td>
+      <td>{{ ip.config.owner.username if ip.config else '-' }}</td>
+      <td>
+        {% if ip.assigned %}
+        <form class="d-inline" action="{{ url_for('admin_release_ip', ip_id=ip.id) }}" method="post">
+          <button class="btn btn-sm btn-outline-warning">释放</button>
+        </form>
+        {% else %}
+        -
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

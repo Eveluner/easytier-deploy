@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>创建虚拟网段</h1>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">网段名称</label>
+    <input class="form-control" name="name" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">CIDR（例如 192.168.100.0/24）</label>
+    <input class="form-control" name="cidr" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">密码</label>
+    <input type="password" class="form-control" name="password" required>
+  </div>
+  <button class="btn btn-primary">创建</button>
+  <a class="btn btn-link" href="{{ url_for('dashboard') }}">返回控制台</a>
+</form>
+{% endblock %}

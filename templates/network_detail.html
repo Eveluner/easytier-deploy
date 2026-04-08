@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>网段详情：{{ network.name }}</h1>
+<p><strong>CIDR：</strong> {{ network.cidr }}<br>
+<strong>所有者：</strong> {{ network.owner.username }}<br>
+<strong>创建时间：</strong> {{ network.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+<div class="mb-3">
+  <a class="btn btn-link" href="{{ url_for('dashboard') }}">返回控制台</a>
+</div>
+<h3>可用 IP</h3>
+{% if available_ips %}
+<ul class="list-group mb-3">
+  {% for ip in available_ips %}
+  <li class="list-group-item">{{ ip.ip }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>当前没有可用 IP。</p>
+{% endif %}
+<h3>已分配 IP</h3>
+{% if assigned_ips %}
+<ul class="list-group mb-3">
+  {% for ip in assigned_ips %}
+  <li class="list-group-item">{{ ip.ip }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>尚未分配任何 IP。</p>
+{% endif %}
+<h3>相关配置文件</h3>
+{% if configs %}
+<table class="table table-bordered">
+  <thead><tr><th>文件名</th><th>系统</th><th>IP</th><th>用户</th><th>下载</th></tr></thead>
+  <tbody>
+    {% for cfg in configs %}
+    <tr>
+      <td>{{ cfg.filename() }}</td>
+      <td>{{ cfg.os_type }}</td>
+      <td>{{ cfg.ip_address }}</td>
+      <td>{{ cfg.owner.username }}</td>
+      <td><a class="btn btn-sm btn-outline-success" href="{{ url_for('download_config', config_id=cfg.id) }}">下载</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>该网段未生成配置文件。</p>
+{% endif %}
+{% endblock %}

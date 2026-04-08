@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>控制台</h1>
+<p>欢迎，{{ user.username }}。您的角色：{{ user.role }}</p>
+<div class="mb-3">
+  <a class="btn btn-primary" href="{{ url_for('create_network') }}">创建虚拟网段</a>
+  <a class="btn btn-secondary" href="{{ url_for('create_config') }}">生成配置文件</a>
+</div>
+<h3>我的网段</h3>
+{% if networks %}
+<table class="table table-bordered">
+  <thead><tr><th>名称</th><th>CIDR</th><th>所有者</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for net in networks %}
+    <tr>
+      <td>{{ net.name }}</td>
+      <td>{{ net.cidr }}</td>
+      <td>{{ net.owner.username }}</td>
+      <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('network_detail', network_id=net.id) }}">查看</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>您尚未创建任何网段。</p>
+{% endif %}
+<h3>配置文件</h3>
+{% if configs %}
+<table class="table table-bordered">
+  <thead><tr><th>文件名</th><th>网段</th><th>系统</th><th>IP</th><th>创建时间</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for cfg in configs %}
+    <tr>
+      <td>{{ cfg.filename() }}</td>
+      <td>{{ cfg.network.name }}</td>
+      <td>{{ cfg.os_type }}</td>
+      <td>{{ cfg.ip_address }}</td>
+      <td>{{ cfg.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-success" href="{{ url_for('download_config', config_id=cfg.id) }}">下载</a>
+        <form class="d-inline" action="{{ url_for('delete_config', config_id=cfg.id) }}" method="post">
+          <button class="btn btn-sm btn-outline-danger" type="submit">删除</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>还没有生成任何配置文件。</p>
+{% endif %}
+{% endblock %}
