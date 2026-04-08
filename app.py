@@ -218,9 +218,8 @@ def create_network():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         cidr = request.form.get('cidr', '').strip()
-        password = request.form.get('password', '').strip()
-        if not name or not cidr or not password:
-            flash('请填写网段名称、CIDR 和密码。', 'warning')
+        if not name or not cidr:
+            flash('请填写网段名称和 CIDR。', 'warning')
             return render_template('network_create.html', user=user)
         try:
             network_value = ipaddress.IPv4Network(cidr, strict=False)
@@ -230,7 +229,12 @@ def create_network():
         if network_value.prefixlen < 24 or network_value.prefixlen > 30:
             flash('仅支持 /24 到 /30 的网段。', 'warning')
             return render_template('network_create.html', user=user)
-        network = Network(name=name, cidr=str(network_value), password=password, owner_id=user.id)
+        network = Network(
+            name=name,
+            cidr=str(network_value),
+            password=EASYTIER_NETWORK_SECRET,
+            owner_id=user.id
+        )
         db.session.add(network)
         db.session.commit()
         for host in network_value.hosts():

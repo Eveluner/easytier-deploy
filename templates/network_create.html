@@ -11,8 +11,9 @@
     <input class="form-control" name="cidr" required>
   </div>
   <div class="mb-3">
-    <label class="form-label">密码</label>
-    <input type="password" class="form-control" name="password" required>
+    <div class="alert alert-info" role="alert">
+      虚拟网段创建后会自动使用部署配置的网络密码。
+    </div>
   </div>
   <button class="btn btn-primary">创建</button>
   <a class="btn btn-link" href="{{ url_for('dashboard') }}">返回控制台</a>
